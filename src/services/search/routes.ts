@@ -1,11 +1,16 @@
 import { Request, Response } from "express";
+import { RequestError } from "request-promise/errors";
+import { getPlacesByName } from "./SearchController";
 
 export default [
   {
-    path: "/",
+    path: "/api/v1/search",
     method: "get",
-    handler: async (req: Request, res: Response) => {
-      res.send("Hello world!");
-    }
+    handler: [
+        async ({ query }: Request, res: Response) => {
+            const result = await getPlacesByName(query.q);
+            res.status(200).send(result);
+        }
+    ]
   }
 ];
