@@ -3,6 +3,9 @@ import express from "express";
 import { applyMiddleware, applyRoutes } from "./utils";
 import middleware from "./middleware";
 import errorHandlers from "./middleware/errorHandlers";
+import securityHandlers from "./middleware/securityHandlers";
+import jwt from "jsonwebtoken";
+
 import routes from "./services";
 
 /**
@@ -19,7 +22,10 @@ process.on("unhandledRejection", e => {
     process.exit(1);
   });
 
+
 const router = express();
+
+applyMiddleware(securityHandlers, router);
 applyMiddleware(middleware, router);
 applyRoutes(routes, router);
 applyMiddleware(errorHandlers, router);
