@@ -9,4 +9,9 @@ describe("OpenCageDataProvider", () => {
     const result = await Provider.getPlaces("Paris");
     expect(result).toEqual({ features: [] });
   });
+
+  test(" an invalid non-json response", async () => {
+      (request as any).mockImplementation(() => "Service unavailable.");
+      await expect(Provider.getPlaces("Chamonix")).rejects.toThrow(SyntaxError);
+  });
 });
